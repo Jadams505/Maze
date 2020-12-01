@@ -5,6 +5,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 
 public class MazeDrawer {
+	public static final String[] IMAGE_EXTENSIONS = new String[] {"png", "jpg", "jpeg"};
 	private Maze maze;
 	private boolean[][] solution;
 	private BufferedImage image;
@@ -20,7 +21,7 @@ public class MazeDrawer {
 		this.image = new BufferedImage(maze.getWidth() * scale, maze.getHeight() * scale, BufferedImage.TYPE_INT_RGB);
 	}
 
-	public void drawMaze() {
+	public void drawMaze(File file) {
 		int color = 0;
 		for (int i = 0; i < maze.getHeight(); i++) {
 			for (int j = 0; j < maze.getWidth(); j++) {
@@ -36,9 +37,11 @@ public class MazeDrawer {
 				}
 			}
 		}
+		toImage(file);
 	}
 
-	public void drawSolution() {
+	public void drawSolution(File file) {
+		file = new File(FileUtil.getFileName(file) + "_solution." + FileUtil.getFileExtension(file));
 		for (int i = 0; i < maze.getHeight(); i++) {
 			for (int j = 0; j < maze.getWidth(); j++) {
 				if (solution[i][j]) {
@@ -50,6 +53,7 @@ public class MazeDrawer {
 				}
 			}
 		}
+		toImage(file);
 	}
 
 	public void hideSolution() {
@@ -66,12 +70,10 @@ public class MazeDrawer {
 		}
 	}
 
-	public void toImage() {
-		String fileName = "maze.png";
-		File file = new File(fileName);
+	public void toImage(File file) {
 		try {
-			ImageIO.write(image, "png", file);
-			System.out.println("Maze drawn in " + fileName);
+			ImageIO.write(image, FileUtil.getFileExtension(file), file);
+			System.out.println("Maze drawn in " + file.getAbsolutePath());
 		} catch (Exception e) {
 			System.out.println("File Fail");
 		}
