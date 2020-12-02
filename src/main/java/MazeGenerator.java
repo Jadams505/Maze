@@ -44,7 +44,6 @@ public class MazeGenerator {
 	/* Set all maze values to false and calculates a random startPoint */
 	private void initilizeMaze() {
 		maze = new boolean[height][width];
-		System.out.println(height);
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				maze[i][j] = false;

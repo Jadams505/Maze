@@ -20,6 +20,14 @@ public class MazeDrawer {
 		}
 		this.image = new BufferedImage(maze.getWidth() * scale, maze.getHeight() * scale, BufferedImage.TYPE_INT_RGB);
 	}
+	public MazeDrawer(int width, int height) {
+		this.maze = new MazeGenerator(width, height).generateMaze();
+		this.solution = MazeSolver.solveMaze(maze);
+		if (maze.getWidth() + maze.getHeight() > 400) {
+			scale = 1;
+		}
+		this.image = new BufferedImage(maze.getWidth() * scale, maze.getHeight() * scale, BufferedImage.TYPE_INT_RGB);
+	}
 
 	public void drawMaze(File file) {
 		int color = 0;
