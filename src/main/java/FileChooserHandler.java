@@ -3,9 +3,12 @@ package main.java;
 import java.io.File;
 import java.io.ObjectInputStream.GetField;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import main.gui.ImageViewerFrame;
 
 public class FileChooserHandler {
 	
@@ -36,14 +39,19 @@ public class FileChooserHandler {
 						if(confirm == JOptionPane.YES_OPTION) {
 							md.drawMaze(file);
 							md.drawSolution(file);
-							JOptionPane.showMessageDialog(null, "File " + file.getName() + " has been overwritten", "File Overwritten", JOptionPane.INFORMATION_MESSAGE);
+							int choice = JOptionPane.showOptionDialog(null, "File " + file.getName() + " has been overwritten", "File Overwritten", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new String[] {"Ok", "View"}, 0);
+							if(choice == 1) {
+								new ImageViewerFrame(new ImageIcon(file.getAbsolutePath()).getImage(), md.getMaze().getWidth(), md.getMaze().getHeight(), md.getScale());
+							}
 							return false;
 						}
 					}else { // If the file does not already exist
 						md.drawMaze(file);
 						md.drawSolution(file);
-						JOptionPane.showOptionDialog(null, "File " + file.getName() + " has successfully been created", "File Saved", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new String[] {"Ok", "View"}, 0);
-						//JOptionPane.showMessageDialog(null, "File " + file.getName() + " has successfully been created", "File Saved", JOptionPane.INFORMATION_MESSAGE);
+						int choice = JOptionPane.showOptionDialog(null, "File " + file.getName() + " has successfully been created", "File Saved", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new String[] {"Ok", "View"}, 0);
+						if(choice == 1) {
+							new ImageViewerFrame(new ImageIcon(file.getAbsolutePath()).getImage(), md.getMaze().getWidth(), md.getMaze().getHeight(), md.getScale());
+						}
 						return false;
 					}
 				}else { // If the file extension is wrong

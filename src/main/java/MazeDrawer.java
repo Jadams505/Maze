@@ -1,5 +1,7 @@
 package main.java;
 
+import java.awt.ImageCapabilities;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -23,10 +25,33 @@ public class MazeDrawer {
 	public MazeDrawer(int width, int height) {
 		this.maze = new MazeGenerator(width, height).generateMaze();
 		this.solution = MazeSolver.solveMaze(maze);
-		if (maze.getWidth() + maze.getHeight() > 400) {
-			scale = 1;
-		}
+		this.scale = calculateScale(width, height);
 		this.image = new BufferedImage(maze.getWidth() * scale, maze.getHeight() * scale, BufferedImage.TYPE_INT_RGB);
+	}
+	
+	
+	
+	public Maze getMaze() {
+		return maze;
+	}
+	public int getScale() {
+		return scale;
+	}
+	
+	public int calculateScale(int width, int height) {
+		int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+		int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+		
+		int widthRatio = screenWidth / width;
+		int heightRatio = screenHeight / height;
+		if(widthRatio == 0 && heightRatio == 0) {
+			return 1;
+		}
+		else if(widthRatio < heightRatio) {
+			return widthRatio;
+		}else {
+			return heightRatio;
+		}
 	}
 
 	public void drawMaze(File file) {
